@@ -1,0 +1,77 @@
+class Neuron:
+    w1 = 0
+    w2 = 0
+    theta = 0
+    possiblew1 = [-1, 1]
+    possiblew2 = [-1, 1]
+    possibletheta = [-2,-1,0,1,2]
+    def __init__(self, input_matrix):
+        self.input_matrix = input_matrix
+    def iterate(self):
+        for w1 in self.possiblew1:
+            self.w1 = w1
+        for w2 in self.possiblew2:
+            self.w2 = w2
+        for theta in self.possibletheta:
+            self.theta = theta
+            if self.checkcombination():
+                return True
+        return False
+
+    def checkcombination(self):
+        valid = True
+        for (x1,x2,y) in self.input_matrix:
+            if not self.compareTarget(x1,x2,y):
+                return False
+        return True
+
+    def compareTarget(self,x1,x2,target):
+        if self.activate(x1,x2) == target:
+            return True
+        return False
+
+    def activate(self, x1, x2):
+        output = self.w1 * x1 + self.w2* x2
+        if output >= self.theta :
+            return 1
+        else:
+            return 0
+
+def neuron_calc(mp):
+    if mp.iterate():
+        print("Weights : {} {}".format(mp.w1 , mp.w2))
+        print("Threshold :{}".format(mp.theta))
+    else:
+        print("not ls")
+print()
+
+if __name__ == "__main__":
+    AND = ([1,1,1],
+            [1,-1,0],
+            [-1,1,0],
+            [-1,-1,0])
+
+    XOR = ([1, 1,0],
+          [1, -1, 1],
+          [-1, 1, 1],
+          [-1, -1, 0])
+
+    NAND = ([1, 1, 0],
+             [1, -1, 1],
+            [-1, 1, 1],
+            [-1, -1, 1])
+
+
+    print("AND MATRIX")
+    andd = Neuron(AND)
+    neuron_calc(andd)
+
+    print("NAND MATRIX")
+    nand = Neuron(NAND)
+    neuron_calc(nand)
+
+    print("Or MATRIX")
+    orr = Neuron(XOR)
+    neuron_calc(orr)
+
+
